@@ -7,10 +7,10 @@ const Header = () => {
         <Link to="/" className="text-xl font-bold">
           Ecommerce CMS
         </Link>
-        <nav className="flex gap-4 text-gray-100">
+        <nav className="flex gap-8 text-gray-100">
           <Link to="/products">Products</Link>
           <Link to="/orders">Orders</Link>
-          <Link to="/products/create">Create</Link>
+          <Link to="/products/create">Create Product</Link>
         </nav>
       </div>
     </header>

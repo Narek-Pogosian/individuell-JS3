@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 const ProductEdit = () => {
   // We get product info from Link state
   const { state } = useLocation();
+  const [error, setError] = useState("");
 
   const { user } = useAuthContext();
   const navigate = useNavigate();
@@ -31,6 +32,12 @@ const ProductEdit = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Check if every value in formData is not empty, returns false if finds one that is empty
+    if (!Object.entries(formData).every((item) => item[1].trim() !== "")) {
+      setError("Please fill in all the fields");
+      return;
+    }
+
     try {
       const res = await axios.put(
         `http://localhost:7000/api/products/${state.product._id}`,
@@ -44,6 +51,7 @@ const ProductEdit = () => {
 
       if (res.status === 200) {
         navigate(`/products/${state.product._id}`);
+        toast.success("Product updated successfully");
       }
     } catch (error) {
       toast.error("Product update failed");
@@ -133,6 +141,9 @@ const ProductEdit = () => {
               onChange={handleChange}
             />
           </div>
+          {error && (
+            <p className="font-bold text-right text-red-500">{error}</p>
+          )}
           <div className="flex justify-end gap-6 mt-4">
             <button
               type="button"

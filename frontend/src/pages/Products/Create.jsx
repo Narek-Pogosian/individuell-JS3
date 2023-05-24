@@ -16,6 +16,7 @@ const Create = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState(initState);
   const { user } = useAuthContext();
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setFormData((data) => {
@@ -28,6 +29,12 @@ const Create = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check if every value in formData is not empty, returns false if finds one that is empty
+    if (!Object.entries(formData).every((item) => item[1].trim() !== "")) {
+      setError("Please fill in all the fields");
+      return;
+    }
 
     try {
       const res = await axios.post(
@@ -44,8 +51,7 @@ const Create = () => {
         navigate(`/products/${_id}`);
       }
     } catch (error) {
-      console.log(error);
-      toast.error("Product createtion failed");
+      toast.error("Product creation failed");
     }
   };
 
@@ -65,6 +71,7 @@ const Create = () => {
               Name
             </label>
             <input
+              required
               type="text"
               id="name"
               className="input"
@@ -79,6 +86,7 @@ const Create = () => {
               Category
             </label>
             <input
+              required
               type="text"
               id="category"
               className="input"
@@ -93,6 +101,7 @@ const Create = () => {
               Price
             </label>
             <input
+              required
               type="text"
               id="price"
               className="input"
@@ -123,6 +132,7 @@ const Create = () => {
               Description
             </label>
             <textarea
+              required
               type="text"
               id="description"
               className="input"
@@ -130,6 +140,9 @@ const Create = () => {
               onChange={handleChange}
             />
           </div>
+          {error && (
+            <p className="font-bold text-right text-red-500">{error}</p>
+          )}
           <div className="flex justify-end gap-6 mt-4">
             <button
               type="button"
@@ -142,7 +155,7 @@ const Create = () => {
               type="submit"
               className="px-4 py-2 font-semibold text-white bg-indigo-500 rounded"
             >
-              Add
+              Submit
             </button>
           </div>
         </div>

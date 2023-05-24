@@ -55,7 +55,6 @@ const OrderDetails = () => {
         toast.success("Status updated successfully");
       }
     } catch (error) {
-      console.log(error);
       toast.error("Error updating order");
     }
   };

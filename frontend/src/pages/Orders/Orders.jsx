@@ -9,8 +9,6 @@ const Orders = () => {
   const { user } = useAuthContext();
   const [userFilterQuery, setUserFilterQuery] = useState("");
 
-  console.log(user);
-
   useEffect(() => {
     const fetchOrders = async () => {
       try {
