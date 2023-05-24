@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import ProductCard from "../../components/ProductCard";
+import { toast } from "react-toastify";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -8,8 +9,12 @@ const Products = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const res = await axios.get("http://localhost:7000/api/products");
-      setProducts(res.data);
+      try {
+        const res = await axios.get("http://localhost:7000/api/products");
+        setProducts(res.data);
+      } catch (error) {
+        toast.error("Error getting products");
+      }
     };
 
     fetchProducts();

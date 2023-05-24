@@ -23,7 +23,6 @@ const Orders = () => {
         }
       } catch (error) {
         toast.error("Error fetching the orders");
-        console.log(error);
       }
     };
 
