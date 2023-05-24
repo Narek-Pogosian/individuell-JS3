@@ -56,7 +56,7 @@ exports.getOrderById = (req, res) => {
 
 exports.getAllOrdersForUser = async (req, res) => {
   const userId = req.user.userId;
-  console.log(userId);
+
   try {
     const orders = await Order.find({ user: userId })
       .populate("user", ["email"])
