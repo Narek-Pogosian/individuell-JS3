@@ -47,8 +47,8 @@ const Create = () => {
         }
       );
       if (res.status === 201) {
-        const { _id } = res.data;
-        navigate(`/products/${_id}`);
+        navigate(`/products`);
+        toast.success("Product created successfully");
       }
     } catch (error) {
       toast.error("Product creation failed");

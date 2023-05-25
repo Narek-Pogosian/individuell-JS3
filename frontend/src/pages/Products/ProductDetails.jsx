@@ -16,7 +16,6 @@ const ProductDetails = () => {
       const res = await axios.get(`http://localhost:7000/api/products/${id}`);
       setProduct(res.data);
     };
-
     fetchProduct();
   }, [id]);
 

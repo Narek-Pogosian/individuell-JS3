@@ -12,14 +12,18 @@ import Orders from "./pages/Orders/Orders";
 import OrderDetails from "./pages/Orders/OrderDetails";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import AddAdmin from "./pages/AddAdmin";
 
 const App = () => {
   const { user } = useAuthContext();
+
+  console.log(user);
 
   return (
     <>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/addadmin" element={<AddAdmin />} />
         <Route
           path="/"
           element={

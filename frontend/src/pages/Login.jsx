@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../hooks/useAuthContext";
 import axios from "axios";
 import { useState } from "react";
@@ -15,17 +15,20 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    if (!email.trim() || !password.trim()) return;
+
     try {
       const res = await axios.post("http://localhost:7000/login", {
         email,
         password,
       });
-
       const { token } = res.data;
 
       setUser({ token, user: jwt_decode(token) });
       navigate("/");
     } catch (error) {
+      console.log(error);
+
       setError(error.response.data.message);
     }
   };
@@ -33,7 +36,7 @@ const Login = () => {
   return (
     <div className="flex flex-col items-center justify-center h-screen gap-8">
       <h1 className="text-2xl font-bold">Ecommerce CMS</h1>
-      <form onSubmit={handleLogin} className="w-72">
+      <form onSubmit={handleLogin} className="w-72" role="form">
         <input
           type="text"
           placeholder="Email"
@@ -55,6 +58,12 @@ const Login = () => {
         {error && (
           <p className="font-semibold text-center text-red-500">{error}</p>
         )}
+        <p>
+          Become an Admin{" "}
+          <Link to="/addadmin" className="text-indigo-500 underline">
+            here
+          </Link>
+        </p>
       </form>
     </div>
   );

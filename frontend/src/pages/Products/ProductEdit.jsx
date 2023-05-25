@@ -7,10 +7,15 @@ import { toast } from "react-toastify";
 const ProductEdit = () => {
   // We get product info from Link state
   const { state } = useLocation();
+
   const [error, setError] = useState("");
 
   const { user } = useAuthContext();
   const navigate = useNavigate();
+
+  if (!state) {
+    navigate("/");
+  }
 
   const [formData, setFormData] = useState({
     name: state.product.name,
@@ -50,7 +55,7 @@ const ProductEdit = () => {
       );
 
       if (res.status === 200) {
-        navigate(`/products/${state.product._id}`);
+        navigate(`/products`);
         toast.success("Product updated successfully");
       }
     } catch (error) {
