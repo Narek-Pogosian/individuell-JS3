@@ -20,14 +20,18 @@ const OrderDetails = () => {
 
   useEffect(() => {
     const fetchOrder = async () => {
-      const res = await axios.get(`http://localhost:7000/orders/${id}`, {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      });
+      try {
+        const res = await axios.get(`http://localhost:7000/orders/${id}`, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
+        });
 
-      setOrder(res.data);
-      setSelectedStatus(res.data.status);
+        setOrder(res.data);
+        setSelectedStatus(res.data.status);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     fetchOrder();
@@ -59,59 +63,67 @@ const OrderDetails = () => {
     }
   };
 
-  return (
-    <>
-      <h1 className="mb-8 text-3xl font-bold">Order Details</h1>
-      <div className="flex flex-col gap-2 mb-10">
-        <p>
-          <b>Order Id:</b> {order?._id}
-        </p>
-        <p>
-          <b>User:</b> {order?.user.email}
-        </p>
+  if (!order) {
+    return <div>Loading..</div>;
+  }
 
-        <p className="mb-1 capitalize">
-          <b>Status:</b> {order?.status}
-        </p>
-        <form onSubmit={updateStatus}>
-          <select
-            name="status"
-            id="status"
-            className="mr-4 input w-80"
-            onChange={(e) => setSelectedStatus(e.target.value)}
-          >
-            {selectOptions.map((option) => (
-              <option
-                className="w-full"
-                key={option.id}
-                value={option.value}
-                selected={option.value === selectedStatus}
-              >
-                {option.name}
-              </option>
+  console.log(order);
+
+  if (order) {
+    return (
+      <>
+        <h1 className="mb-8 text-3xl font-bold">Order Details</h1>
+        <div className="flex flex-col gap-2 mb-10">
+          <p>
+            <b>Order Id:</b> {order?._id}
+          </p>
+          <p>
+            <b>User:</b> {order?.user.email}
+          </p>
+
+          <p className="mb-1 capitalize">
+            <b>Status:</b> {order?.status}
+          </p>
+          <form onSubmit={updateStatus}>
+            <select
+              name="status"
+              id="status"
+              className="mr-4 input w-80"
+              onChange={(e) => setSelectedStatus(e.target.value)}
+            >
+              {selectOptions.map((option) => (
+                <option
+                  className="w-full"
+                  key={option.id}
+                  value={option.value}
+                  selected={option.value === selectedStatus}
+                >
+                  {option.name}
+                </option>
+              ))}
+            </select>
+            <button
+              type="submit"
+              disabled={selectedStatus === order?.status}
+              className="px-4 py-2 text-white bg-indigo-500 rounded disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              Update
+            </button>
+          </form>
+        </div>
+        <div>
+          <p className="mb-2 text-lg font-semibold">
+            Products: {order?.products.length}
+          </p>
+          <ul className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
+            {order?.products?.map((product) => (
+              <ProductCard key={product._id} product={product.product} />
             ))}
-          </select>
-          <button
-            type="submit"
-            disabled={selectedStatus === order?.status}
-            className="px-4 py-2 text-white bg-indigo-500 rounded disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            Update
-          </button>
-        </form>
-      </div>
-      <div>
-        <p className="mb-2 text-lg font-semibold">
-          Products: {order?.products.length}
-        </p>
-        <ul className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
-          {order?.products?.map((product) => (
-            <ProductCard key={product._id} product={product.product} />
-          ))}
-        </ul>
-      </div>
-    </>
-  );
+          </ul>
+        </div>
+      </>
+    );
+  }
 };
 
 export default OrderDetails;
