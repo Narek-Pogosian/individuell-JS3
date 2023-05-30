@@ -29,6 +29,18 @@ exports.registerUser = (req, res) => {
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
+  User.findOne({ email: email }).then((data) => {
+    if (!data || !bcrypt.compareSync(password, data.password)) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+    const token = jwt.sign({ email: data.email, userId: data._id }, secretKey);
+    res.json({ message: "User logged in", token });
+  });
+};
+
+exports.loginAdmin = async (req, res) => {
+  const { email, password } = req.body;
+
   const user = await User.findOne({ email });
 
   if (!user) {
@@ -36,10 +48,7 @@ exports.loginUser = async (req, res) => {
   }
 
   // check if the user is admin
-  console.log(user.id);
   const isAdmin = await Admin.findOne({ adminId: user.id });
-  const admins = await Admin.find();
-  console.log(admins);
 
   if (!isAdmin) {
     return res.status(401).json({

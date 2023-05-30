@@ -18,7 +18,7 @@ const Login = () => {
     if (!email.trim() || !password.trim()) return;
 
     try {
-      const res = await axios.post("http://localhost:7000/login", {
+      const res = await axios.post("http://localhost:7000/login/admin", {
         email,
         password,
       });

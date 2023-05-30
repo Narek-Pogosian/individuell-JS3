@@ -17,8 +17,6 @@ import AddAdmin from "./pages/AddAdmin";
 const App = () => {
   const { user } = useAuthContext();
 
-  console.log(user);
-
   return (
     <>
       <Routes>
