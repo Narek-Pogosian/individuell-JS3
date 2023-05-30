@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const ProductCard = ({ product }) => {
   // There may be orders with products that have been deleted, it will cause error
   if (!product) {
-    return <p>Product deletet or error</p>;
+    return <p>Product deleted or error</p>;
   }
 
   return (
