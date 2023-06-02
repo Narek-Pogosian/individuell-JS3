@@ -21,9 +21,17 @@ describe("Login", () => {
     expect(componentElement).toBeInTheDocument();
   });
 
-  // it("displays correct text", () => {
-  //   render(<MyComponent />);
-  //   const textElement = screen.getByText("Hello, World!");
-  //   expect(textElement).toBeInTheDocument();
-  // });
+  it("show a link to admin", () => {
+    render(<MockLoginPage />);
+    const linkElement = screen.getByText("here");
+
+    // check if we have link
+    expect(linkElement).toBeInTheDocument();
+
+    // check if it is an actual link
+    expect(linkElement.tagName).toBe("A");
+
+    // check if it has the correct href
+    expect(linkElement.getAttribute("href")).toBe("/addadmin");
+  });
 });
